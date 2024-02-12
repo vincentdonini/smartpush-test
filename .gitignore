@@ -1,1 +1,5 @@
 .idea
+/logs/apache/*
+/logs/symfony/*
+!/logs/apache/.gitkeep
+!/logs/symfony/.gitkeep
