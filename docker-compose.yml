@@ -1,0 +1,50 @@
+version: "3.8"
+services:
+  db:
+    container_name: smartpush_api_test
+    image: percona/percona-server
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: smartpushtest
+      MYSQL_USER: usertest
+      MYSQL_PASSWORD: smartpushtest
+    ports:
+      - '3306:3306'
+    volumes:
+      - smartpush_api_data_test:/var/lib/mysql
+    command: mysqld --sql_mode=""
+    restart: on-failure
+    networks:
+      - smartpush_api_test
+
+  www:
+    build:
+      context: docker-conf/php
+      dockerfile: Dockerfile
+      args:
+        web_vhost: https://api.dev.smartpush-test.fr
+    container_name: smartpush_api_www_test
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./docker-conf/php/vhosts:/etc/apache2/sites-enabled
+      - ./api:/var/www:rw
+      - ./logs/apache:/var/log/apache2
+      - cache:/var/www/var/cache:rw
+      - ./logs/symfony:/var/www/var/log:rw
+      - ./docker-conf/php/conf.ini/custom-php.ini:/usr/local/etc/php/conf.d/custom-php.ini:delegated
+    restart: on-failure
+    environment:
+      VIRTUAL_HOST: https://api.dev.smartpush-test.fr
+    networks:
+      - smartpush_api_test
+
+volumes:
+  smartpush_api_data_test:
+    driver: local
+  cache:
+    name: smartpush_api_cache_test
+
+networks:
+  smartpush_api_test:
