@@ -6,6 +6,7 @@ use App\Repository\TypePaymentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: TypePaymentRepository::class)]
 class TypePayment
@@ -13,9 +14,11 @@ class TypePayment
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['typePayments.list'])]
     private int $id;
 
     #[ORM\Column(length: 80)]
+    #[Groups(['typePayments.list'])]
     private string $name;
 
     /**
