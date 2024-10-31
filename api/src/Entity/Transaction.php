@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\TransactionRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 #[ORM\Entity(repositoryClass: TransactionRepository::class)]
 class Transaction
@@ -11,12 +13,15 @@ class Transaction
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['transactions.list'])]
     private int $id;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['transactions.list'])]
     private string $label;
 
     #[ORM\Column]
+    #[Groups(['transactions.list'])]
     private float $amount;
 
     #[ORM\ManyToOne(inversedBy: 'transactions')]
@@ -69,5 +74,12 @@ class Transaction
         $this->typePayment = $typePayment;
 
         return $this;
+    }
+
+    #[Groups(['transactions.list'])]
+    #[SerializedName('typePayment')]
+    public function getTypePaymentId(): int
+    {
+        return $this->typePayment->getId();
     }
 }

@@ -14,11 +14,11 @@ class TypePayment
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['typePayments.list'])]
+    #[Groups(['typePayments.list', 'transactions.list'])]
     private int $id;
 
     #[ORM\Column(length: 80)]
-    #[Groups(['typePayments.list'])]
+    #[Groups(['typePayments.list', 'transactions.list'])]
     private string $name;
 
     /**
