@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\TypePaymentRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TypePaymentRepository::class)]
@@ -15,6 +17,17 @@ class TypePayment
 
     #[ORM\Column(length: 80)]
     private string $name;
+
+    /**
+     * @var Collection<int, Transaction>
+     */
+    #[ORM\OneToMany(targetEntity: Transaction::class, mappedBy: 'typePayment')]
+    private Collection $transactions;
+
+    public function __construct()
+    {
+        $this->transactions = new ArrayCollection();
+    }
 
     public function getId(): int
     {
@@ -38,5 +51,13 @@ class TypePayment
         $this->name = $name;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Transaction>
+     */
+    public function getTransactions(): Collection
+    {
+        return $this->transactions;
     }
 }
