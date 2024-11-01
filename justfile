@@ -4,6 +4,7 @@ _default:
 setup-app:
     @just dev-up
     @just composer-install
+    @just load-fixtures
     @just install-node-modules
 
 dev-up:
@@ -54,6 +55,13 @@ db-schema-diff:
 
 db-schema-update:
     docker compose exec www bash -c 'php bin/console doctrine:schema:update --force --complete'
+
+reload-local-fixtures:
+	@just db-restart
+	@just load-fixtures
+
+load-fixtures:
+    docker compose exec www bash -c "php bin/console doctrine:fixtures:load --no-interaction"
 
 shell-backend:
     docker compose exec www bash
