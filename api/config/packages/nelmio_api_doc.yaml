@@ -1,8 +1,9 @@
 nelmio_api_doc:
+    use_validation_groups: true
     documentation:
         info:
-            title: My App
-            description: This is an awesome app!
+            title: SMARTPUSH - Documentation
+            description: Documentation of Smartpush technical test
             version: 1.0.0
     areas: # to filter documented areas
         path_patterns:

@@ -1,0 +1,196 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "SMARTPUSH - Documentation",
+        "description": "Documentation of Smartpush technical test",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/doc.json": {
+            "get": {
+                "responses": {
+                    "default": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/transactions": {
+            "get": {
+                "tags": [
+                    "Transactions"
+                ],
+                "operationId": "get_list_transactions",
+                "responses": {
+                    "200": {
+                        "description": "Returns transactions list",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Transaction"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Transactions"
+                ],
+                "operationId": "post_create_transaction",
+                "responses": {
+                    "200": {
+                        "description": "Create a transaction",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Transaction2"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/transactions/{id}": {
+            "get": {
+                "tags": [
+                    "Transactions"
+                ],
+                "operationId": "get_detail_transaction",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns transaction details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Transaction2"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Transactions"
+                ],
+                "operationId": "delete_delete_transaction",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Delete a transaction"
+                    }
+                }
+            }
+        },
+        "/api/payment-types": {
+            "get": {
+                "tags": [
+                    "Payment Types"
+                ],
+                "operationId": "get_list_payment_types",
+                "responses": {
+                    "200": {
+                        "description": "Returns payment types list",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/TypePayment"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Transaction": {
+                "type": "object"
+            },
+            "Transaction2": {
+                "type": "object"
+            },
+            "TypePayment": {
+                "required": [
+                    "id",
+                    "name",
+                    "transactions"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "transactions": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Transaction3"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "Transaction3": {
+                "required": [
+                    "id",
+                    "label",
+                    "amount",
+                    "typePayment"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "label": {
+                        "type": "string"
+                    },
+                    "amount": {
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "typePayment": {
+                        "$ref": "#/components/schemas/TypePayment"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    }
+}

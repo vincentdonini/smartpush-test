@@ -9,10 +9,12 @@ use App\Repository\TransactionRepositoryInterface;
 use App\Repository\TypePaymentRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Nelmio\ApiDocBundle\Annotation\Model;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use OpenApi\Attributes as OA;
 
 class TransactionController extends AbstractController
 {
@@ -22,6 +24,15 @@ class TransactionController extends AbstractController
     ) {
     }
     #[Route('/transactions', name: 'list_transactions', methods: ['GET'])]
+    #[OA\Response(
+        response: 200,
+        description: 'Returns transactions list',
+        content: new OA\JsonContent(
+            type: 'array',
+            items: new OA\Items(ref: new Model(type: Transaction::class, groups: ['basic']))
+        )
+    )]
+    #[OA\Tag(name: 'Transactions')]
     public function list(): JsonResponse
     {
         $transactions = $this->transactionRepository->getTransactionList();
@@ -35,6 +46,15 @@ class TransactionController extends AbstractController
     }
 
     #[Route('/transactions/{id}', name: 'detail_transaction', methods: ['GET'])]
+    #[OA\Response(
+        response: 200,
+        description: 'Returns transaction details',
+        content: new OA\JsonContent(
+            type: 'array',
+            items: new OA\Items(ref: new Model(type: Transaction::class, groups: ['extend']))
+        )
+    )]
+    #[OA\Tag(name: 'Transactions')]
     public function detail(int $id): JsonResponse
     {
         $transaction = $this->transactionRepository->getTransactionById($id);
@@ -48,6 +68,15 @@ class TransactionController extends AbstractController
     }
 
     #[Route('/transactions', name: 'create_transaction', methods: ['POST'])]
+    #[OA\Response(
+        response: 200,
+        description: 'Create a transaction',
+        content: new OA\JsonContent(
+            type: 'array',
+            items: new OA\Items(ref: new Model(type: Transaction::class, groups: ['extend']))
+        )
+    )]
+    #[OA\Tag(name: 'Transactions')]
     public function create(Request $request): JsonResponse
     {
         $data   = $request->getPayload()->all();
@@ -87,6 +116,11 @@ class TransactionController extends AbstractController
     }
 
     #[Route('/transactions/{id}', name: 'delete_transaction', methods: ['DELETE'])]
+    #[OA\Response(
+        response: 200,
+        description: 'Delete a transaction',
+    )]
+    #[OA\Tag(name: 'Transactions')]
     public function delete(int $id): JsonResponse
     {
         $transaction = $this->transactionRepository->getTransactionById($id);
